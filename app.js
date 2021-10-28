@@ -4,6 +4,7 @@ const hpp = require('hpp');
 const helmet = require('helmet');
 const rateLimiter = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const app = express();
 app.use(helmet());
@@ -14,6 +15,7 @@ const limiter = rateLimiter({
   message: 'Too many requests from this IP',
 });
 app.use(hpp());
+app.use(xss());
 app.use(mongoSanitize());
 app.use('/api', limiter);
 module.exports = app;
