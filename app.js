@@ -10,6 +10,7 @@ const app = express();
 app.use(helmet());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.static(`${__dirname}/public`));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const limiter = rateLimiter({
   max: 100,
@@ -20,4 +21,5 @@ app.use(hpp());
 app.use(xss());
 app.use(mongoSanitize());
 app.use('/api', limiter);
+
 module.exports = app;
