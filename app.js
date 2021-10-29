@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 
 const userRouter = require('./routes/userRoutes');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 app.use(helmet());
@@ -25,5 +26,7 @@ app.use(mongoSanitize());
 app.use('/api', limiter);
 
 app.use('/api/users', userRouter);
+
+app.use(globalErrorHandler);
 
 module.exports = app;

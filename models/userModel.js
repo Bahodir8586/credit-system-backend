@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
@@ -39,6 +39,22 @@ const userSchema = mongoose.Schema({
     default: 'user',
   },
 });
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.methods.checkPassword = async function (
+  candidatePassword,
+  hashedRealPassword
+) {
+  return await bcrypt.compare(candidatePassword, hashedRealPassword);
+};
 
 const User = mongoose.model('User', userSchema);
 
