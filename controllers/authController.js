@@ -48,11 +48,15 @@ exports.signin = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
+  const { name, email, password, passwordConfirm } = req.body;
+  if (!name || !email || !password || !passwordConfirm) {
+    return next(new AppError('Please provide all required fields', 400));
+  }
   const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    name,
+    email,
+    password,
+    passwordConfirm,
   });
   createAndSendToken(newUser, 201, res);
 });
