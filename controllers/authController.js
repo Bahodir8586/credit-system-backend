@@ -127,6 +127,21 @@ exports.logout = catchAsync(async (req, res, next) => {
   res.clearCookie('jwt').send();
 });
 
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError('No user found with that id', 404));
+  }
+
+  const token = await user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: 'Success',
+    token,
+  });
+});
+
 exports.resetPassword = catchAsync(async (req, res, next) => {
   const hashedToken = crypto
     .createHash('sha256')

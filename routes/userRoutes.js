@@ -7,7 +7,7 @@ router.post('/signin', authController.signin);
 router.post('/signup', authController.signup);
 router.get('/logout', authController.logout);
 router.get('/verify', authController.protect, authController.verifyToken);
+router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
-
 
 module.exports = router;
