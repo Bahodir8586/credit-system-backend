@@ -33,6 +33,9 @@ const userSchema = mongoose.Schema({
       message: 'Passwords are not the same',
     },
   },
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
   role: {
     type: String,
     enum: ['admin', 'manager', 'assistant', 'warehouse-manager', 'user'],
@@ -54,6 +57,14 @@ userSchema.methods.checkPassword = async function (
   hashedRealPassword
 ) {
   return await bcrypt.compare(candidatePassword, hashedRealPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = +(this.passwordChangedAt.getTime() / 1000);
+    return JWTTimeStamp < changedTimeStamp;
+  }
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);

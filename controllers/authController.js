@@ -75,12 +75,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // Check if user changed password after the token was issued
-  // FIXME: uncomment it after applying password change functionality
-  // if (currentUser.changedPasswordAfter(decoded.iat)) {
-  //   return next(
-  //     new AppError('User recently changed password! Please log in again.', 401)
-  //   );
-  // }
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recently changed password! Please log in again.', 401)
+    );
+  }
   req.user = currentUser;
   next();
 });
