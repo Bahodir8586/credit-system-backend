@@ -9,7 +9,6 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, 'Please provide your name'],
     mingLength: 2,
-    validate: [validator.isAlpha, 'Please use only characters a-z and A-Z'],
   },
   email: {
     type: String,
