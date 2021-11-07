@@ -123,6 +123,26 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
   createAndSendToken(newUser, 201, res);
 });
+
 exports.logout = catchAsync(async (req, res, next) => {
   res.clearCookie('jwt').send();
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+  const user = await User.findOne({ passwordResetToken: hashedToken });
+
+  if (!user || Date.now() > user.passwordResetExpires) {
+    return next(new AppError('Token is not valid or expired', 400));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  createAndSendToken(user, 200, res);
 });
