@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
 const pug = require('pug');
 
 module.exports = class Email {
@@ -10,13 +11,11 @@ module.exports = class Email {
   }
 
   newTransport() {
-    return nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD,
-      },
-    });
+    return nodemailer.createTransport(
+      nodemailerSendgrid({
+        apiKey: process.env.SENDGRID_PASSWORD,
+      })
+    );
   }
 
   async send(template, subject) {
