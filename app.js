@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 
 const userRouter = require('./routes/userRoutes');
 const globalErrorHandler = require('./controllers/errorController');
+const AppError = require('./utils/appError');
 
 const app = express();
 app.use(helmet());
