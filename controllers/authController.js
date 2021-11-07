@@ -123,3 +123,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
   createAndSendToken(newUser, 201, res);
 });
+exports.logout = catchAsync(async (req, res, next) => {
+  res.clearCookie('jwt').send();
+});
