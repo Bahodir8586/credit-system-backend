@@ -68,7 +68,7 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUsers = catchAsync(async (req, res, next) => {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
   console.log(req.query);
   let filter = {};
   if (req.user.role === 'manager') {
