@@ -21,7 +21,16 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
 exports.getUsers = catchAsync(async (req, res, next) => {});
 
-exports.getMe = catchAsync(async (req, res, next) => {});
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = User.findById(req.user.id);
+  //   TODO: populations there
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
