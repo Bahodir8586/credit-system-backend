@@ -1,5 +1,7 @@
 const express = require('express');
 // const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const hpp = require('hpp');
 const helmet = require('helmet');
 const rateLimiter = require('express-rate-limit');
@@ -15,7 +17,7 @@ const app = express();
 app.use(helmet());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.static(`${__dirname}/public`));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const limiter = rateLimiter({
   max: 100,
@@ -25,6 +27,9 @@ const limiter = rateLimiter({
 app.use(hpp());
 app.use(xss());
 app.use(mongoSanitize());
+app.use(cookieParser());
+
+app.use(cors());
 app.use('/api', limiter);
 
 app.use('/api/users', userRouter);
