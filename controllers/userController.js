@@ -68,7 +68,20 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUsers = catchAsync(async (req, res, next) => {});
+exports.getUsers = catchAsync(async (req, res, next) => {
+  console.log(req.query);
+  let filter = {};
+  if (req.user.role === 'manager') {
+  }
+  const users = User.find(filter);
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users,
+    },
+  });
+});
 
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = User.findById(req.user.id);
