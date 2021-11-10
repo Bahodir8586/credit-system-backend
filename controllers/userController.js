@@ -32,7 +32,30 @@ exports.createUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateUser = catchAsync(async (req, res, next) => {});
+exports.updateUser = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(new AppError('This route is not for updating password', 400));
+  }
+  const filteredBody = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    filteredBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser,
+    },
+  });
+});
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.params.id);
