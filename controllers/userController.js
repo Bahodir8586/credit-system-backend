@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 
 exports.getUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.params.id);
+  console.log(user);
   res.status(200).json({
     status: 'success',
     data: {
@@ -85,7 +86,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.getMe = catchAsync(async (req, res, next) => {
-  const user = User.findById(req.user.id);
+  const user = await User.findById(req.user.id);
   //   TODO: populations there
   res.status(200).json({
     status: 'success',
