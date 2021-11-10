@@ -12,7 +12,25 @@ exports.getUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createUser = catchAsync(async (req, res, next) => {});
+exports.createUser = catchAsync(async (req, res, next) => {
+  const { name, email, password, passwordConfirm, role } = req.body;
+  if (!name || !email || !password || !passwordConfirm) {
+    return next(new AppError('Please provide all required fields', 400));
+  }
+  const newUser = await User.create({
+    name,
+    email,
+    password,
+    passwordConfirm,
+    role,
+  });
+  res.status(201).json({
+    status: 'success',
+    data: {
+      newUser,
+    },
+  });
+});
 
 exports.updateUser = catchAsync(async (req, res, next) => {});
 
