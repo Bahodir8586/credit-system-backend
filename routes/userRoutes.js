@@ -13,6 +13,7 @@ router.get('/verify', authController.protect, authController.verifyToken);
 
 router.use(authController.protect);
 
+router.patch('/updatePassword', authController.updatePassword);
 router.get('/getMe', userController.getMe);
 router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
@@ -24,7 +25,7 @@ router
   .post(userController.createUser);
 router
   .route('/:id')
-  .get(userController.getAllUsers)
+  .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 

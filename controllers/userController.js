@@ -73,7 +73,8 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   let filter = {};
   if (req.user.role === 'manager') {
   }
-  const users = User.find(filter);
+  const users = await User.find(filter);
+  console.log(users);
   res.status(200).json({
     status: 'success',
     results: users.length,
