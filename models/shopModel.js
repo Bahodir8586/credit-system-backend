@@ -5,6 +5,10 @@ const shopSchema = mongoose.Schema({
     type: String,
     required: [true, 'Please provide the name of shop'],
   },
+  image: {
+    type: String,
+    required: true,
+  },
   location: {
     type: {
       type: String,
@@ -15,7 +19,7 @@ const shopSchema = mongoose.Schema({
     address: String,
     description: String,
   },
-  workers: [
+  employees: [
     {
       type: mongoose.Schema.ObjectId,
       ref: 'User',

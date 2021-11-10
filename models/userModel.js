@@ -33,12 +33,16 @@ const userSchema = mongoose.Schema({
       message: 'Passwords are not the same',
     },
   },
+  status: {
+    type: Boolean,
+    default: true,
+  },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
   role: {
     type: String,
-    enum: ['admin', 'manager', 'assistant', 'warehouse-manager', 'user'],
+    enum: ['admin', 'manager', 'assistant', 'warehouseManager', 'user'],
     default: 'user',
   },
 });
