@@ -6,7 +6,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 const multerStorage = multer.memoryStorage();
-const multerFilter = (req, file, cb) => {
+const multerFilter = (req, file, callback) => {
   if (file.mimetype.startsWith('image')) {
     callback(null, true);
   } else {
@@ -24,16 +24,20 @@ const upload = multer({
 exports.uploadProductImages = upload.single('image');
 
 exports.resizeProductImage = catchAsync(async (req, res, next) => {
-  if (!req.files.image) return next();
-
+  if (!req.file) return next();
   // 1) Cover image
-  req.body.image = `product-${req.params.id}-${Date.now()}.jpeg`;
-  await sharp(req.files.image[0].buffer)
-    .resize(640, 640)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`public/img/products/${req.body.image}`);
+  req.body.image = `product-${Date.now()}.jpeg`;
+  try {
+    await sharp(req.file.buffer)
+      .resize(640, 640)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(`public/img/products/${req.body.image}`);
+  } catch (e) {
+    console.log(e);
+  }
 
+  console.log(req.body.image);
   next();
 });
 
@@ -66,8 +70,9 @@ exports.getProduct = catchAsync(async (req, res, next) => {
 });
 
 exports.createProduct = catchAsync(async (req, res, next) => {
-  const { name, image, price } = req.body;
-  if (!name || !price || !image) {
+  console.log(req.body);
+  const { name, price } = req.body;
+  if (!name || !price) {
     return next(new AppError('Please provide all required fields', 400));
   }
   const newProduct = await Product.create(req.body);

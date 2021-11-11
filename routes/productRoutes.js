@@ -10,7 +10,12 @@ router.get('/:id', productController.getProduct);
 router.use(authController.protect);
 router.use(authController.restrictTo('admin', 'warehouseManager'));
 
-router.post('/', productController.createProduct);
+router.post(
+  '/',
+  productController.uploadProductImages,
+  productController.resizeProductImage,
+  productController.createProduct
+);
 router
   .route('/:id')
   //   .patch(productController.updateProduct)
