@@ -30,7 +30,19 @@ exports.getProduct = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createProduct = catchAsync(async (req, res, next) => {});
+exports.createProduct = catchAsync(async (req, res, next) => {
+  const { name, image, price } = req.body;
+  if (!name || !price || !image) {
+    return next(new AppError('Please provide all required fields', 400));
+  }
+  const newProduct = await Product.create(req.body);
+  res.status(201).json({
+    status: 'success',
+    data: {
+      newProduct,
+    },
+  });
+});
 
 exports.deleteProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);

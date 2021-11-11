@@ -7,14 +7,14 @@ const productSchema = mongoose.Schema(
       type: String,
       required: [true, 'Product name can not be empty'],
     },
-    mainImage: {
+    image: {
       type: String,
       required: [true, 'Please provide image of the product'],
     },
-    images: [String],
     amount: {
       type: Number,
       min: [0, 'Amount of the product can not be negative'],
+      default: 0,
     },
     rating: {
       type: Number,
