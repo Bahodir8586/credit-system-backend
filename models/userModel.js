@@ -4,48 +4,55 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Please provide your name'],
-    mingLength: 2,
-  },
-  email: {
-    type: String,
-    unique: true,
-    lowercase: true,
-    required: [true, 'Please provide your email'],
-    validate: [validator.isEmail, 'Please provide a valid email'],
-  },
-  password: {
-    type: String,
-    required: [true, 'Please provide a password'],
-    minLength: 8,
-    select: false,
-  },
-  passwordConfirm: {
-    type: String,
-    required: [true, 'Please provide a password confirmation'],
-    validate: {
-      validator: function (el) {
-        return this.password === el;
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Please provide your name'],
+      mingLength: 2,
+    },
+    email: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      required: [true, 'Please provide your email'],
+      validate: [validator.isEmail, 'Please provide a valid email'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Please provide a password'],
+      minLength: 8,
+      select: false,
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, 'Please provide a password confirmation'],
+      validate: {
+        validator: function (el) {
+          return this.password === el;
+        },
+        message: 'Passwords are not the same',
       },
-      message: 'Passwords are not the same',
+    },
+    status: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    role: {
+      type: String,
+      enum: ['admin', 'manager', 'assistant', 'warehouseManager', 'user'],
+      default: 'user',
     },
   },
-  status: {
-    type: Boolean,
-    default: true,
-  },
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  role: {
-    type: String,
-    enum: ['admin', 'manager', 'assistant', 'warehouseManager', 'user'],
-    default: 'user',
-  },
-});
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {

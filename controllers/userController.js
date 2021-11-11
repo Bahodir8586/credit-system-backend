@@ -71,8 +71,9 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   console.log(req.query);
-  let filter = {};
+  let filter = { ...req.query };
   if (req.user.role === 'manager') {
+    // TODO: add branch ID to filter object there
   }
   const users = await User.find(filter);
   console.log(users);
