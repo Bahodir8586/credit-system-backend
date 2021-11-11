@@ -1,6 +1,41 @@
+const multer = require('multer');
+const sharp = require('sharp');
+
 const Product = require('../models/productModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    callback(null, true);
+  } else {
+    callback(
+      new AppError('Not an image! Please upload only images.', 400),
+      false
+    );
+  }
+};
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadProductImages = upload.single('image');
+
+exports.resizeProductImage = catchAsync(async (req, res, next) => {
+  if (!req.files.image) return next();
+
+  // 1) Cover image
+  req.body.image = `product-${req.params.id}-${Date.now()}.jpeg`;
+  await sharp(req.files.image[0].buffer)
+    .resize(640, 640)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/products/${req.body.image}`);
+
+  next();
+});
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
   console.log(req.query);
