@@ -94,3 +94,9 @@ exports.deleteProduct = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.outProduct = catchAsync(async (req, res, next) => {});
+
+exports.inProduct = catchAsync(async (req, res, next) => {});
+
+exports.updateProduct = catchAsync(async (req, res, next) => {});

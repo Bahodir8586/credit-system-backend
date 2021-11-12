@@ -8,7 +8,18 @@ router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProduct);
 
 router.use(authController.protect);
+router.patch(
+  '/out/:id',
+  authController.restrictTo(
+    'admin',
+    'manager',
+    'warehouseManager',
+    'assistant'
+  ),
+  productController.outProduct
+);
 router.use(authController.restrictTo('admin', 'warehouseManager'));
+router.patch('/in/:id', productController.inProduct);
 
 router.post(
   '/',
@@ -18,7 +29,13 @@ router.post(
 );
 router
   .route('/:id')
-  //   .patch(productController.updateProduct)
+  .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
 module.exports = router;
+
+// Sell => amount
+// Out  => amount
+// In   => amount
+// Edit => name, image, price, priceDiscount, description
+// Credit => do it later
