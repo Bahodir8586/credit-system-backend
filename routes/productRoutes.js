@@ -29,7 +29,11 @@ router.post(
 );
 router
   .route('/:id')
-  .patch(productController.updateProduct)
+  .patch(
+    productController.uploadProductImages,
+    productController.resizeProductImage,
+    productController.updateProduct
+  )
   .delete(productController.deleteProduct);
 
 module.exports = router;

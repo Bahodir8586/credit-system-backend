@@ -113,9 +113,9 @@ exports.outProduct = catchAsync(async (req, res, next) => {
 });
 
 exports.inProduct = catchAsync(async (req, res, next) => {
-  const product = await Product.findByIdAndUpdate(req.params.id, {
-    amount: amount + req.body.amount,
-  });
+  const product = await Product.findById(req.params.id);
+  product.amount = +product.amount + +req.body.amount;
+  await product.save();
   res.status(201).json({
     status: 'success',
     data: {
@@ -128,7 +128,7 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
   if (req.body.amount) {
     return next(new AppError('This route is not for updating amount', 400));
   }
-  const product = await User.findByIdAndUpdate(req.params.id, req.body, {
+  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
