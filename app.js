@@ -11,6 +11,7 @@ const xss = require('xss-clean');
 const userRouter = require('./routes/userRoutes');
 const authRouter = require('./routes/authRoutes');
 const productRouter = require('./routes/productRoutes');
+const branchRouter = require('./routes/branchRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -36,6 +37,7 @@ app.use('/api', limiter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/products', productRouter);
+app.use('/api/branches', branchRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
