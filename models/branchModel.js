@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const shopSchema = mongoose.Schema(
+const branchSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide the name of shop'],
+      required: [true, 'Please provide the name of branch'],
     },
     image: {
       type: String,
@@ -33,6 +33,6 @@ const shopSchema = mongoose.Schema(
   }
 );
 
-const Shop = mongoose.model('Shop', shopSchema);
+const Branch = mongoose.model('Branch', branchSchema);
 
-module.exports = Shop;
+module.exports = Branch;
