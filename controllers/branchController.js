@@ -41,7 +41,16 @@ exports.resizeBranchImage = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.createBranch = catchAsync(async (req, res, next) => {});
+exports.createBranch = catchAsync(async (req, res, next) => {
+  const { name, longitude, latitude, image } = req.body;
+  const newBranch = await Branch.create({ name, image });
+  res.status(200).json({
+    status: 'success',
+    data: {
+      ...newBranch,
+    },
+  });
+});
 exports.getAllBranches = catchAsync(async (req, res, next) => {});
 exports.getSingleBranch = catchAsync(async (req, res, next) => {});
 exports.updateBranch = catchAsync(async (req, res, next) => {});
