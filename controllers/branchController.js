@@ -55,7 +55,15 @@ exports.createBranch = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.getAllBranches = catchAsync(async (req, res, next) => {});
+exports.getAllBranches = catchAsync(async (req, res, next) => {
+  const branches = await Branch.find();
+  res.status(200).json({
+    status: 'success',
+    data: {
+      branches,
+    },
+  });
+});
 exports.getSingleBranch = catchAsync(async (req, res, next) => {
   const branch = await Branch.findById(req.params.id);
   if (!branch) {
