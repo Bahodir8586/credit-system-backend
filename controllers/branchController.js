@@ -63,11 +63,16 @@ exports.getSingleBranch = catchAsync(async (req, res, next) => {
   });
 });
 exports.createBranch = catchAsync(async (req, res, next) => {
-  const { name, longitude, latitude, image } = req.body;
+  const { name, longitude, latitude, image, address, description } = req.body;
   const branch = await Branch.create({
     name,
     image,
-    location: [longitude, latitude],
+    location: {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+      address,
+      description,
+    },
   });
   res.status(200).json({
     status: 'success',
