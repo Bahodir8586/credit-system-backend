@@ -12,7 +12,11 @@ router.use(authController.protect, authController.restrictTo('admin'));
 router.route('/').post(branchController.createBranch);
 router
   .route('/:id')
-  .patch(branchController.updateBranch)
+  .patch(
+    branchController.uploadBranchImages,
+    branchController.resizeBranchImage,
+    branchController.updateBranch
+  )
   .delete(branchController.deleteBranch);
 
 module.exports = router;
