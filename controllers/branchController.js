@@ -59,7 +59,7 @@ exports.getAllBranches = catchAsync(async (req, res, next) => {});
 exports.getSingleBranch = catchAsync(async (req, res, next) => {
   const branch = await Branch.findById(req.params.id);
   if (!branch) {
-    return next(new AppError('Not found', 404));
+    return next(new AppError('No branch found with that ID', 404));
   }
   res.status(200).json({
     status: 'success',
@@ -68,7 +68,21 @@ exports.getSingleBranch = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.updateBranch = catchAsync(async (req, res, next) => {});
+exports.updateBranch = catchAsync(async (req, res, next) => {
+  const branch = await Branch.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!branch) {
+    return next(new AppError('No branch found with that ID', 404));
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      branch,
+    },
+  });
+});
 exports.deleteBranch = catchAsync(async (req, res, next) => {
   const branch = await Branch.findByIdAndDelete(req.params.id);
   if (!branch) {
