@@ -9,7 +9,13 @@ router.get('/:id', branchController.getSingleBranch);
 
 router.use(authController.protect, authController.restrictTo('admin'));
 
-router.route('/').post(branchController.createBranch);
+router
+  .route('/')
+  .post(
+    branchController.uploadBranchImages,
+    branchController.resizeBranchImage,
+    branchController.createBranch
+  );
 router
   .route('/:id')
   .patch(
