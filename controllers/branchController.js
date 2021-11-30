@@ -41,20 +41,6 @@ exports.resizeBranchImage = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.createBranch = catchAsync(async (req, res, next) => {
-  const { name, longitude, latitude, image } = req.body;
-  const branch = await Branch.create({
-    name,
-    image,
-    location: [longitude, latitude],
-  });
-  res.status(200).json({
-    status: 'success',
-    data: {
-      branch,
-    },
-  });
-});
 exports.getAllBranches = catchAsync(async (req, res, next) => {
   const branches = await Branch.find();
   res.status(200).json({
@@ -69,6 +55,20 @@ exports.getSingleBranch = catchAsync(async (req, res, next) => {
   if (!branch) {
     return next(new AppError('No branch found with that ID', 404));
   }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      branch,
+    },
+  });
+});
+exports.createBranch = catchAsync(async (req, res, next) => {
+  const { name, longitude, latitude, image } = req.body;
+  const branch = await Branch.create({
+    name,
+    image,
+    location: [longitude, latitude],
+  });
   res.status(200).json({
     status: 'success',
     data: {
