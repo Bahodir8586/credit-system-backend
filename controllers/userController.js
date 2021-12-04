@@ -17,7 +17,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm, role } = req.body;
+  const { name, email, password, passwordConfirm, role, branch } = req.body;
   if (!name || !email || !password || !passwordConfirm) {
     return next(new AppError('Please provide all required fields', 400));
   }
@@ -27,6 +27,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
     password,
     passwordConfirm,
     role,
+    branch,
   });
   res.status(201).json({
     status: 'success',
@@ -79,7 +80,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     // TODO: add branch ID to filter object there
   }
   const users = await User.find(filter);
-  // console.log(users);
+  console.log(users);
   res.status(200).json({
     status: 'success',
     results: users.length,

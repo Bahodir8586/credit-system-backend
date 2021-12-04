@@ -46,7 +46,6 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
   let filter = { ...req.query };
   //   TODO: apply pagination and search
   const products = await Product.find();
-  console.log(products);
   res.status(200).json({
     status: 'success',
     results: products.length,

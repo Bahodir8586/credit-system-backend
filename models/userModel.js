@@ -47,12 +47,24 @@ const userSchema = mongoose.Schema(
       enum: ['admin', 'manager', 'assistant', 'warehouseManager', 'user'],
       default: 'user',
     },
+    branch: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Branch',
+    },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
+
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'branch',
+    select: 'name',
+  });
+  next();
+});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
