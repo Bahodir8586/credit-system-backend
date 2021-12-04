@@ -17,7 +17,10 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm, role, branch } = req.body;
+  let { name, email, password, passwordConfirm, role, branch } = req.body;
+  if (role === 'warehouseManager' || role === 'admin') {
+    branch = undefined;
+  }
   if (!name || !email || !password || !passwordConfirm) {
     return next(new AppError('Please provide all required fields', 400));
   }

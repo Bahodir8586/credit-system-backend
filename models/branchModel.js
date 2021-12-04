@@ -5,6 +5,7 @@ const branchSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, 'Please provide the name of branch'],
+      unique: true,
     },
     image: {
       type: String,
