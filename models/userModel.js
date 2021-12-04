@@ -62,7 +62,7 @@ const userSchema = mongoose.Schema(
 userSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'branch',
-    select: 'name -employees -id',
+    select: 'name',
   });
   next();
 });

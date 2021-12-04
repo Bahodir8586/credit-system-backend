@@ -21,25 +21,25 @@ const branchSchema = mongoose.Schema(
       address: String,
       description: String,
     },
-    employees: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-      },
-    ],
+    // employees: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'User',
+    //   },
+    // ],
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
-branchSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'employees',
-    select: 'name',
-  });
-  next();
-});
+// branchSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'employees',
+//     select: 'name',
+//   });
+//   next();
+// });
 
 const Branch = mongoose.model('Branch', branchSchema);
 

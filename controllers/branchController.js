@@ -2,6 +2,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 
 const Branch = require('../models/branchModel');
+const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
@@ -43,11 +44,20 @@ exports.resizeBranchImage = catchAsync(async (req, res, next) => {
 
 exports.getAllBranches = catchAsync(async (req, res, next) => {
   const branches = await Branch.find();
+  const readyBranches = await Promise.all(
+    branches.map(async (branch) => {
+      const employees = await User.aggregate([
+        { $match: { branch: branch._id } },
+        { $project: { id: 1, name: 1, role: 1 } },
+      ]);
+      return { branch, employees };
+    })
+  );
   console.log(branches);
   res.status(200).json({
     status: 'success',
     data: {
-      branches,
+      branches: readyBranches,
     },
   });
 });
@@ -56,10 +66,15 @@ exports.getSingleBranch = catchAsync(async (req, res, next) => {
   if (!branch) {
     return next(new AppError('No branch found with that ID', 404));
   }
+  const employees = await User.find({ branch: req.params.id });
+  console.log(branch);
   res.status(200).json({
     status: 'success',
     data: {
-      branch,
+      branch: {
+        branch,
+        employees,
+      },
     },
   });
 });
