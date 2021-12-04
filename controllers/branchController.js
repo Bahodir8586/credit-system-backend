@@ -43,6 +43,7 @@ exports.resizeBranchImage = catchAsync(async (req, res, next) => {
 
 exports.getAllBranches = catchAsync(async (req, res, next) => {
   const branches = await Branch.find();
+  console.log(branches);
   res.status(200).json({
     status: 'success',
     data: {

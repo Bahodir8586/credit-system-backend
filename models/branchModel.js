@@ -33,6 +33,13 @@ const branchSchema = mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+branchSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'employees',
+    select: 'name',
+  });
+  next();
+});
 
 const Branch = mongoose.model('Branch', branchSchema);
 

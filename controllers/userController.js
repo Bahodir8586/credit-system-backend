@@ -83,7 +83,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     // TODO: add branch ID to filter object there
   }
   const users = await User.find(filter);
-  console.log(users);
   res.status(200).json({
     status: 'success',
     results: users.length,
