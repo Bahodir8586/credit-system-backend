@@ -50,7 +50,7 @@ exports.getAllBranches = catchAsync(async (req, res, next) => {
         { $match: { branch: branch._id } },
         { $project: { id: 1, name: 1, role: 1 } },
       ]);
-      return { branch, employees };
+      return { branch, employees }
     })
   );
   console.log(branches);
