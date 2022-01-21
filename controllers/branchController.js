@@ -26,7 +26,6 @@ exports.uploadBranchImages = upload.single('image');
 
 exports.resizeBranchImage = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
-  // 1) Cover image
   req.body.image = `branch-${Date.now()}.jpeg`;
   try {
     await sharp(req.file.buffer)
