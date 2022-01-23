@@ -36,6 +36,7 @@ exports.resizeBranchImage = catchAsync(async (req, res, next) => {
   } catch (e) {
     console.log(e);
   }
+  
   console.log(req.body.image);
   next();
 });
