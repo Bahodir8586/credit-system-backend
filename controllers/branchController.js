@@ -36,11 +36,10 @@ exports.resizeBranchImage = catchAsync(async (req, res, next) => {
   } catch (e) {
     console.log(e);
   }
-  
+
   console.log(req.body.image);
   next();
 });
-
 exports.getAllBranches = catchAsync(async (req, res, next) => {
   const branches = await Branch.find();
   const readyBranches = await Promise.all(
