@@ -60,7 +60,6 @@ exports.getAllBranches = catchAsync(async (req, res, next) => {
     },
   });
 });
-
 exports.getSingleBranch = catchAsync(async (req, res, next) => {
   const branch = await Branch.findById(req.params.id);
   if (!branch) {
