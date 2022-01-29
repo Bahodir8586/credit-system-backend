@@ -95,6 +95,7 @@ exports.createBranch = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 exports.updateBranch = catchAsync(async (req, res, next) => {
   const branch = await Branch.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
